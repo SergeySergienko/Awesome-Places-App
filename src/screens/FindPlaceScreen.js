@@ -6,7 +6,7 @@ import PlaceList from "../components/PlaceList/PlaceList";
 class FindPlaceScreen extends React.Component {
   itemSelectedHandler = key => {
     const selPlace = this.props.places.find(place => place.key === key);
-    this.props.navigation.navigate("Detail", {
+    this.props.navigation.push("Detail", {
       selectedPlace: selPlace
     });
   };

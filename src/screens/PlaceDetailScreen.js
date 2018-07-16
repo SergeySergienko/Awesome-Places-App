@@ -1,10 +1,13 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { View, Image, Text, Button, StyleSheet } from 'react-native';
+import { View, Image, Text, Button, StyleSheet, TouchableOpasity } from 'react-native';
+import { Icon } from "react-native-elements";
+import {connect} from 'react-redux';
+import {deletePlace} from '../store/actions/index';
 
 class PlaceDetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    console.log(navigation);
+    console.log(navigation.pop);
     return {
       title: navigation.state.routeName,
       headerRight: (
@@ -16,6 +19,11 @@ class PlaceDetailScreen extends React.Component {
       ),
     };
   };
+
+  placeDeleteHandler = () => {
+    this.props.onDeletePlace(this.props.navigation.getParam('selectedPlace').key);
+    this.props.navigation.pop();
+  }
 
   render() {
     const selectedPlace = this.props.navigation.getParam('selectedPlace');
@@ -30,11 +38,7 @@ class PlaceDetailScreen extends React.Component {
           <Text style={styles.placeName}>{selectedPlace.name}</Text>
         </View>
         <View>
-          <Button
-            title="Delete"
-            color="#d35400"
-            onPress={this.props.onItemDeleted}
-          />
+          <Icon name='delete' color='red' size={40} onPress={this.placeDeleteHandler}/>
         </View>
       </View>
     );
@@ -56,4 +60,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlaceDetailScreen;
+const dispatchToProps = dispatch => {
+  return {
+    onDeletePlace: key => dispatch(deletePlace(key))
+  }
+}
+
+export default connect(null, dispatchToProps)(PlaceDetailScreen);

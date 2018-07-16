@@ -8,7 +8,7 @@ export default class Auth extends React.Component {
       <View style={styles.container}>
         <Text>Auth Screen</Text>
         <Button title="Login" onPress={() => navigate("Tabs")} />
-        <Button title="Go To Place Page" onPress={() => navigate("Place")} />
+        {/*<Button title="Go To Place Page" onPress={() => navigate("Place")} />*/}
       </View>
     );
   }

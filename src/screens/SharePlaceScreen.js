@@ -7,6 +7,7 @@ import { addPlace } from "../store/actions/index";
 class SharePlaceScreen extends React.Component {
   placeAddHandler = placeName => {
     this.props.onAddPlace(placeName);
+    this.props.navigation.navigate('Find');
   };
   render() {
     return (

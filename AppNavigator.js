@@ -8,7 +8,7 @@ export default createStackNavigator(
   {
     Auth: AuthScreen,
     Tabs: TabNavigator,
-    Place: PlaceScreen,
+    // Place: PlaceScreen,
     Detail: PlaceDetailScreen
   },
   {
