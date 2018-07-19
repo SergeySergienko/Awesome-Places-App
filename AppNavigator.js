@@ -2,20 +2,23 @@ import { createStackNavigator } from "react-navigation";
 import AuthScreen from "./src/screens/AuthScreen";
 import PlaceScreen from "./src/screens/PlaceScreen";
 import TabNavigator from "./TabNavigator";
+import DrawerNavigator from "./DrawerNavigator";
 import PlaceDetailScreen from "./src/screens/PlaceDetailScreen";
 
 export default createStackNavigator(
   {
-    Auth: AuthScreen,
+    // Auth: AuthScreen,
     Tabs: TabNavigator,
     // Place: PlaceScreen,
-    Detail: PlaceDetailScreen
+    Detail: PlaceDetailScreen,
+    Drawer: DrawerNavigator
   },
   {
-    initialRouteName: "Auth",
+    initialRouteName: "Drawer",
+    headerMode: 'none',
     navigationOptions: {
       headerStyle: {
-        backgroundColor: "green"
+        backgroundColor: "blue"
       },
       headerTintColor: "#fff",
       headerTitleStyle: {

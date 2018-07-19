@@ -7,15 +7,11 @@ import {deletePlace} from '../store/actions/index';
 
 class PlaceDetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    console.log(navigation.pop);
+    const menu = <Icon name='menu' color='white' size={30}/>;
     return {
       title: navigation.state.routeName,
       headerRight: (
-        <Button
-          onPress={() => alert('This is a button!')}
-          title="Info"
-          color="green"
-        />
+        <Text onPress={() => navigation.navigate('Drawer')}>{menu}</Text>
       ),
     };
   };

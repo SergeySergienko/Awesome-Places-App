@@ -1,15 +1,39 @@
-import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Button, TextInput, ImageBackground } from 'react-native';
+import DefaultInput from './UI/DefaultInput';
+import HeadingText from './UI/HeadingText';
+import MainText from './UI/MainText';
+import ButtonWithBG from './UI/ButtonWithBG';
+import backgroundImage from '../assets/pic_1.jpg';
 
 export default class Auth extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        <Text>Auth Screen</Text>
-        <Button title="Login" onPress={() => navigate("Tabs")} />
-        {/*<Button title="Go To Place Page" onPress={() => navigate("Place")} />*/}
-      </View>
+      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+        <View style={styles.container}>
+          
+            <MainText>
+              <HeadingText>Please Log In</HeadingText>
+            </MainText>
+            <ButtonWithBG 
+              backgroundColor='#29aaf4'
+              onPress={()=>alert('Hello')}
+              >
+                Switch to Login
+            </ButtonWithBG>
+            <View style={styles.inputContainer}>
+              <DefaultInput placeholder='Email' style={styles.input}/>
+              <DefaultInput placeholder='Password' />
+              <DefaultInput placeholder='ConfirmPassword' />
+            </View>
+            <ButtonWithBG
+            backgroundColor='#ff00aa'
+            onPress={() => navigate('Tabs')}>Submit
+            </ButtonWithBG>
+          
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -17,7 +41,23 @@ export default class Auth extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-around",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    // borderColor: 'red',
+    height: 605,
   },
+  backgroundImage: {
+    width: '100%',
+    flex: 1,
+  },
+  inputContainer: {
+    width:'80%'
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderColor: '#555',
+    fontWeight: '800',
+    color: 'red'
+  }
 });
