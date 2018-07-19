@@ -20,7 +20,10 @@ const placeList = props => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    width: "100%"
+    flex: 1,
+    justifyContent: "center",
+    // alignItems: "center",
+    width: "100%",
   }
 });
 

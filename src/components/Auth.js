@@ -24,8 +24,8 @@ export default class Auth extends React.Component {
             </ButtonWithBG>
             <View style={styles.inputContainer}>
               <DefaultInput placeholder='Email' style={styles.input}/>
-              <DefaultInput placeholder='Password' />
-              <DefaultInput placeholder='ConfirmPassword' />
+              <DefaultInput placeholder='Password' style={styles.input} />
+              <DefaultInput placeholder='ConfirmPassword' style={styles.input} />
             </View>
             <ButtonWithBG
             backgroundColor='#ff00aa'
