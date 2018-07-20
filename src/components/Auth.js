@@ -5,7 +5,9 @@ import {
   View,
   Button,
   TextInput,
-  ImageBackground
+  ImageBackground,
+  KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
 import DefaultInput from "./UI/DefaultInput";
 import HeadingText from "./UI/HeadingText";
@@ -16,31 +18,51 @@ import backgroundImage from "../assets/pic_1.jpg";
 export default class Auth extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
+    let headingText = null;
+    if (Dimensions.get("window").height > 500) {
+      headingText = (
+        <MainText>
+          <HeadingText>Please Log In</HeadingText>
+        </MainText>
+      );
+    }
     return (
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View style={styles.container}>
-          <MainText>
-            <HeadingText>Please Log In</HeadingText>
-          </MainText>
-          <ButtonWithBG
-            backgroundColor="#29aaf4"
-            onPress={() => alert("Hello")}
-          >
-            Switch to Login
-          </ButtonWithBG>
-          <View style={styles.inputContainer}>
-            <DefaultInput placeholder="Email" style={styles.input} />
-            <DefaultInput placeholder="Password" style={styles.input} />
-            <DefaultInput placeholder="ConfirmPassword" style={styles.input} />
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.container}>
+            {headingText}
+            <ButtonWithBG
+              backgroundColor="#29aaf4"
+              onPress={() => alert("Hello")}
+            >
+              Switch to Login
+            </ButtonWithBG>
+            <View style={styles.inputContainer}>
+              <DefaultInput placeholder="Email" style={styles.input} />
+              <View style={styles.passwordContainer}>
+                <View style={styles.passwordWrapper}>
+                  <DefaultInput placeholder="Password" style={styles.input} />
+                </View>
+                <View style={styles.passwordWrapper}>
+                  <DefaultInput
+                    placeholder="ConfirmPassword"
+                    style={styles.input}
+                  />
+                </View>
+              </View>
+            </View>
+            <ButtonWithBG
+              backgroundColor="#ff00aa"
+              onPress={() => navigate("Tabs")}
+            >
+              Submit
+            </ButtonWithBG>
           </View>
-          <ButtonWithBG
-            backgroundColor="#ff00aa"
-            onPress={() => navigate("Tabs")}
-          >
-            Submit
-          </ButtonWithBG>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -66,5 +88,14 @@ const styles = StyleSheet.create({
     borderColor: "#555",
     fontWeight: "800",
     color: "red"
+  },
+  passwordContainer: {
+    flexDirection: Dimensions.get("window").height > 500 ? "column" : "row",
+    justifyContent: "space-between",
+    marginHorizontal: -10
+  },
+  passwordWrapper: {
+    flex: 1,
+    marginHorizontal: 10
   }
 });

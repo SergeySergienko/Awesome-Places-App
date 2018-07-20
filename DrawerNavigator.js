@@ -18,7 +18,13 @@ const DrawerNavigator = createDrawerNavigator(
     drawerPosition: "right",
     drawerWidth: 200,
     drawerBackgroundColor: "#eee",
-    contentComponent: CustomDrawer
+    contentComponent: CustomDrawer,
+    contentOptions: {
+      activeTintColor: "#fff",
+      activeBackgroundColor: "#29aaf4",
+      inactiveTintColor: "#29aaf4",
+      inactiveBackgroundColor: "#fff"
+    }
   }
 );
 
