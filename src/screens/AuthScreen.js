@@ -25,7 +25,7 @@ export default class AuthScreen extends React.Component {
               />
             </Left>
           </Header>
-          <Content style={styles.container}>
+          <Content contentContainerStyle={styles.container}>
             <Auth navigation={this.props.navigation} />
           </Content>
         </Container>

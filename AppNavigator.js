@@ -15,7 +15,7 @@ export default createStackNavigator(
   },
   {
     initialRouteName: "Drawer",
-    headerMode: 'none',
+    // headerMode: 'none',
     navigationOptions: {
       headerStyle: {
         backgroundColor: "blue"

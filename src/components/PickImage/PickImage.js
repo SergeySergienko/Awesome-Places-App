@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Image, StyleSheet} from 'react-native';
 import ButtonWithBG from '../UI/ButtonWithBG';
-import imagePlaceholder from '../../assets/pic_1.jpg';
+import imagePlaceholder from '../../assets/pic_3.jpg';
 
 class PickImage extends React.Component {
   render() {

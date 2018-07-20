@@ -12,9 +12,26 @@ import HeadingText from '../components/UI/HeadingText';
 import imagePlaceholder from '../assets/pic_1.jpg';
 
 class SharePlaceScreen extends React.Component {
-  placeAddHandler = placeName => {
-    this.props.onAddPlace(placeName);
-    this.props.navigation.navigate('Find');
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.state.routeName,
+    };
+  };
+
+  state = {
+    placeName: ""
+  };
+
+  placeNameChangeHandler = placeName => {
+    this.setState({ placeName });
+  };
+
+
+  placeAddHandler = () => {
+    if(this.state.placeName.trim() !== '') {
+      this.props.onAddPlace(this.state.placeName);
+      this.props.navigation.navigate('Find');
+    }
   };
   render() {
     return (
@@ -24,10 +41,15 @@ class SharePlaceScreen extends React.Component {
             <HeadingText>Share the place with us</HeadingText>
           </MainText>
           <PickImage />
-          <PickLocation />
-          <PlaceInput placeAddHandler={this.placeAddHandler} />
+          <PickLocation/>
+          <PlaceInput placeName={this.state.placeName}
+                      onChangeText={this.placeNameChangeHandler}
+          />
           <View style={styles.button}>
-           <ButtonWithBG backgroundColor='#ff00aa'>Share the Place</ButtonWithBG>
+           <ButtonWithBG backgroundColor='#ff00aa'
+                         onPress={this.placeAddHandler}>
+              Share the Place
+           </ButtonWithBG>
           </View>
         </View>
       </ScrollView>
@@ -40,16 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
-  },
-  placeholder: {
-    borderWidth: 1,
-    backgroundColor: '#ccc',
-    width: '80%',
-    height: 200,
-  },
-  previewImage: {
-    width: '100%',
-    height: '100%',
   },
   button: {
     margin: 8,

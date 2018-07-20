@@ -4,7 +4,7 @@ import DefaultInput from './UI/DefaultInput';
 import HeadingText from './UI/HeadingText';
 import MainText from './UI/MainText';
 import ButtonWithBG from './UI/ButtonWithBG';
-import backgroundImage from '../assets/pic_1.jpg';
+import backgroundImage from '../assets/pic_3.jpg';
 
 export default class Auth extends React.Component {
   render() {
@@ -29,7 +29,8 @@ export default class Auth extends React.Component {
             </View>
             <ButtonWithBG
             backgroundColor='#ff00aa'
-            onPress={() => navigate('Tabs')}>Submit
+            onPress={() => navigate('Tabs')}>
+              Submit
             </ButtonWithBG>
           
         </View>

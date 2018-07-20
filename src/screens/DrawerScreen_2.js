@@ -13,7 +13,7 @@ export default class DrawerScreen_2 extends React.Component {
             />
           </Left>
         </Header>
-        <Content style={styles.container}>
+        <Content contentContainerStyle={styles.container}>
           <Text>Drawer Screen 2</Text>
         </Content>
       </Container>
