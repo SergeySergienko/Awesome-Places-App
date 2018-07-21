@@ -3,6 +3,7 @@ import { StyleSheet, FlatList } from "react-native";
 import ListItem from "../ListItem/ListItem";
 
 const placeList = props => {
+  console.log(props);
   return (
     <FlatList
       style={styles.listContainer}
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    width: "100%",
+    width: "100%"
     // marginTop: 30,
   }
 });

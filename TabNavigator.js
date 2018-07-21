@@ -14,15 +14,20 @@ const TabNavigator = createBottomTabNavigator(
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         return routeName === "Share" ? (
-          <Icon name="share" />
+          <Icon name="share" color={focused ? "#fff" : "#29aaf4"} />
         ) : (
-          <Icon name="search" />
+          <Icon name="search" color={focused ? "#fff" : "#29aaf4"} />
         );
       }
     }),
     tabBarOptions: {
-      activeTintColor: "blue",
-      inactiveTintColor: "gray"
+      activeTintColor: "#fff",
+      activeBackgroundColor: "#29aaf4",
+      inactiveTintColor: "#29aaf4",
+      inactiveBackgroundColor: "#fff",
+      labelStyle: {
+        fontSize: 14
+      }
     }
   }
 );

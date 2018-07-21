@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         places: state.places.concat({
-          key: Math.random(),
+          key: Math.random().toString(),
           name: action.placeName,
           image: {
             uri:
@@ -27,9 +27,7 @@ const reducer = (state = initialState, action) => {
     case DELETE_PLACE:
       return {
         ...state,
-        places: state.places.filter(
-          place => place.key !== action.placeKey
-        )
+        places: state.places.filter(place => place.key !== action.placeKey)
       };
     case SELECT_PLACE:
       return {
