@@ -17,7 +17,30 @@ import backgroundImage from "../assets/pic_1.jpg";
 
 export default class Auth extends React.Component {
   state = {
-    viewMode: Dimensions.get("window").height > 500 ? "portrait" : "landscape"
+    viewMode: Dimensions.get("window").height > 500 ? "portrait" : "landscape",
+    controls: {
+      email: {
+        value: '',
+        valid: false,
+        validationRules: {
+          isEmail: true
+        }
+      },
+      password: {
+        value: '',
+        valid: false,
+        validationRules: {
+          minLength: 6
+        }
+      },
+      confirmPassword: {
+        value: '',
+        valid: false,
+        validationRules: {
+          equalTo: 'password'
+        }
+      }
+    }
   };
   constructor(props) {
     super(props);
@@ -31,6 +54,20 @@ export default class Auth extends React.Component {
       viewMode: dims.window.height > 500 ? "portrait" : "landscape"
     });
   };
+  updateInputState = (key, value) => {
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          [key]: {
+            ...prevState.controls[key],
+            value: value
+            }
+        }
+      }
+    })
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     let headingText = null;
@@ -51,12 +88,14 @@ export default class Auth extends React.Component {
             {headingText}
             <ButtonWithBG
               backgroundColor="#29aaf4"
-              onPress={() => alert("Hello")}
-            >
+              onPress={() => alert("Hello")}>
               Switch to Login
             </ButtonWithBG>
             <View style={styles.inputContainer}>
-              <DefaultInput placeholder="Email" style={styles.input} />
+              <DefaultInput placeholder="Email"
+                            style={styles.input}
+                            value={this.state.controls.email.value}
+                            onChangeText={val => this.updateInputState('email', val)} />
               <View
                 style={
                   this.state.viewMode === "portrait"
@@ -71,7 +110,10 @@ export default class Auth extends React.Component {
                       : styles.landscapePasswordWrapper
                   }
                 >
-                  <DefaultInput placeholder="Password" style={styles.input} />
+                <DefaultInput placeholder="Password"
+                              style={styles.input} 
+                              value={this.state.controls.password.value}
+                              onChangeText={val => this.updateInputState('password', val)} />
                 </View>
                 <View
                   style={
@@ -83,7 +125,8 @@ export default class Auth extends React.Component {
                   <DefaultInput
                     placeholder="ConfirmPassword"
                     style={styles.input}
-                  />
+                    value={this.state.controls.confirmPassword.value}
+                    onChangeText={val => this.updateInputState('confirmPassword', val)} />
                 </View>
               </View>
             </View>
