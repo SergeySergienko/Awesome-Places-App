@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -15,10 +16,12 @@ import MainText from "./UI/MainText";
 import ButtonWithBG from "./UI/ButtonWithBG";
 import backgroundImage from "../assets/pic_1.jpg";
 import validate from "../utility/validation";
+import { tryAuth } from "../store/actions/index";
 
-export default class Auth extends React.Component {
+class Auth extends React.Component {
   state = {
     viewMode: Dimensions.get("window").height > 500 ? "portrait" : "landscape",
+    authMode: "login",
     controls: {
       email: {
         value: "",
@@ -53,10 +56,25 @@ export default class Auth extends React.Component {
   componentWillUnmount() {
     Dimensions.removeEventListener("change", this.updateStyles);
   }
+  switchAuthModeHandler = () => {
+    this.setState(prevState => {
+      return {
+        authMode: prevState.authMode === "login" ? "signup" : "login"
+      };
+    });
+  };
   updateStyles = dims => {
     this.setState({
       viewMode: dims.window.height > 500 ? "portrait" : "landscape"
     });
+  };
+  loginHandler = () => {
+    const authData = {
+      email: this.state.controls.email.value,
+      password: this.state.controls.password.value
+    };
+    this.props.onLogin(authData);
+    this.props.navigation.navigate("Tabs");
   };
   updateInputState = (key, value) => {
     let connectedValue = {};
@@ -112,11 +130,32 @@ export default class Auth extends React.Component {
     const { navigate } = this.props.navigation;
     const { email, password, confirmPassword } = this.state.controls;
     let headingText = null;
+    let confirmPasswordControl = null;
     if (this.state.viewMode === "portrait") {
       headingText = (
         <MainText>
           <HeadingText>Please Log In</HeadingText>
         </MainText>
+      );
+    }
+    if (this.state.authMode === "signup") {
+      confirmPasswordControl = (
+        <View
+          style={
+            this.state.viewMode === "portrait"
+              ? styles.portraitPasswordWrapper
+              : styles.landscapePasswordWrapper
+          }
+        >
+          <DefaultInput
+            placeholder="ConfirmPassword"
+            style={styles.input}
+            value={confirmPassword.value}
+            onChangeText={val => this.updateInputState("confirmPassword", val)}
+            valid={confirmPassword.valid}
+            touched={confirmPassword.touched}
+          />
+        </View>
       );
     }
     return (
@@ -129,9 +168,9 @@ export default class Auth extends React.Component {
             {headingText}
             <ButtonWithBG
               backgroundColor="#29aaf4"
-              onPress={() => alert("Hello")}
+              onPress={this.switchAuthModeHandler}
             >
-              Switch to Login
+              Switch to {this.state.authMode === "login" ? "Sign Up" : "Login"}
             </ButtonWithBG>
             <View style={styles.inputContainer}>
               <DefaultInput
@@ -144,14 +183,16 @@ export default class Auth extends React.Component {
               />
               <View
                 style={
-                  this.state.viewMode === "portrait"
+                  this.state.viewMode === "portrait" ||
+                  this.state.authMode === "login"
                     ? styles.portraitPasswordContainer
                     : styles.landscapePasswordContainer
                 }
               >
                 <View
                   style={
-                    this.state.viewMode === "portrait"
+                    this.state.viewMode === "portrait" ||
+                    this.state.authMode === "login"
                       ? styles.portraitPasswordWrapper
                       : styles.landscapePasswordWrapper
                   }
@@ -165,31 +206,16 @@ export default class Auth extends React.Component {
                     touched={password.touched}
                   />
                 </View>
-                <View
-                  style={
-                    this.state.viewMode === "portrait"
-                      ? styles.portraitPasswordWrapper
-                      : styles.landscapePasswordWrapper
-                  }
-                >
-                  <DefaultInput
-                    placeholder="ConfirmPassword"
-                    style={styles.input}
-                    value={confirmPassword.value}
-                    onChangeText={val =>
-                      this.updateInputState("confirmPassword", val)
-                    }
-                    valid={confirmPassword.valid}
-                    touched={confirmPassword.touched}
-                  />
-                </View>
+                {confirmPasswordControl}
               </View>
             </View>
             <ButtonWithBG
               backgroundColor="#ff00aa"
-              onPress={() => navigate("Tabs")}
+              onPress={this.loginHandler}
               disabled={
-                !email.valid || !password.valid || !confirmPassword.valid
+                !email.valid ||
+                !password.valid ||
+                (!confirmPassword.valid && this.state.authMode === "signup")
               }
             >
               Submit
@@ -237,3 +263,14 @@ const styles = StyleSheet.create({
     width: "100%"
   }
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: authData => dispatch(tryAuth(authData))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Auth);
