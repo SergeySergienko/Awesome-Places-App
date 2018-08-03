@@ -154,75 +154,77 @@ class Auth extends React.Component {
             onChangeText={val => this.updateInputState("confirmPassword", val)}
             valid={confirmPassword.valid}
             touched={confirmPassword.touched}
+            secureTextEntry
           />
         </View>
       );
     }
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <ImageBackground
-          source={backgroundImage}
-          style={styles.backgroundImage}
-        >
-          <View style={styles.container}>
-            {headingText}
-            <ButtonWithBG
-              backgroundColor="#29aaf4"
-              onPress={this.switchAuthModeHandler}
+      // <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          {headingText}
+          <ButtonWithBG
+            backgroundColor="#29aaf4"
+            onPress={this.switchAuthModeHandler}
+          >
+            Switch to {this.state.authMode === "login" ? "Sign Up" : "Login"}
+          </ButtonWithBG>
+          <View style={styles.inputContainer}>
+            <DefaultInput
+              placeholder="Email"
+              style={styles.input}
+              value={email.value}
+              onChangeText={val => this.updateInputState("email", val)}
+              valid={email.valid}
+              touched={email.touched}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+            />
+            <View
+              style={
+                this.state.viewMode === "portrait" ||
+                this.state.authMode === "login"
+                  ? styles.portraitPasswordContainer
+                  : styles.landscapePasswordContainer
+              }
             >
-              Switch to {this.state.authMode === "login" ? "Sign Up" : "Login"}
-            </ButtonWithBG>
-            <View style={styles.inputContainer}>
-              <DefaultInput
-                placeholder="Email"
-                style={styles.input}
-                value={email.value}
-                onChangeText={val => this.updateInputState("email", val)}
-                valid={email.valid}
-                touched={email.touched}
-              />
               <View
                 style={
                   this.state.viewMode === "portrait" ||
                   this.state.authMode === "login"
-                    ? styles.portraitPasswordContainer
-                    : styles.landscapePasswordContainer
+                    ? styles.portraitPasswordWrapper
+                    : styles.landscapePasswordWrapper
                 }
               >
-                <View
-                  style={
-                    this.state.viewMode === "portrait" ||
-                    this.state.authMode === "login"
-                      ? styles.portraitPasswordWrapper
-                      : styles.landscapePasswordWrapper
-                  }
-                >
-                  <DefaultInput
-                    placeholder="Password"
-                    style={styles.input}
-                    value={password.value}
-                    onChangeText={val => this.updateInputState("password", val)}
-                    valid={password.valid}
-                    touched={password.touched}
-                  />
-                </View>
-                {confirmPasswordControl}
+                <DefaultInput
+                  placeholder="Password"
+                  style={styles.input}
+                  value={password.value}
+                  onChangeText={val => this.updateInputState("password", val)}
+                  valid={password.valid}
+                  touched={password.touched}
+                  secureTextEntry
+                />
               </View>
+              {confirmPasswordControl}
             </View>
-            <ButtonWithBG
-              backgroundColor="#ff00aa"
-              onPress={this.loginHandler}
-              disabled={
-                !email.valid ||
-                !password.valid ||
-                (!confirmPassword.valid && this.state.authMode === "signup")
-              }
-            >
-              Submit
-            </ButtonWithBG>
           </View>
-        </ImageBackground>
-      </KeyboardAvoidingView>
+          <ButtonWithBG
+            backgroundColor="#ff00aa"
+            onPress={this.loginHandler}
+            disabled={
+              !email.valid ||
+              !password.valid ||
+              (!confirmPassword.valid && this.state.authMode === "signup")
+            }
+          >
+            Submit
+          </ButtonWithBG>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+      // </KeyboardAvoidingView>
     );
   }
 }
