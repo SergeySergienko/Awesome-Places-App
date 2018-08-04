@@ -1,40 +1,86 @@
-import React from 'react';
-import {View, Image, StyleSheet, Text} from 'react-native';
-import ButtonWithBG from '../UI/ButtonWithBG';
-import imagePlaceholder from '../../assets/pic_1.jpg';
+import React from "react";
+import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
+import ButtonWithBG from "../UI/ButtonWithBG";
+import imagePlaceholder from "../../assets/pic_1.jpg";
+import { MapView } from "expo";
 
 class PickLocation extends React.Component {
+  state = {
+    focusedLocation: {
+      latitude: 49.9935,
+      longitude: 36.2304,
+      latitudeDelta: 0.0122,
+      longitudeDelta:
+        (Dimensions.get("window").width / Dimensions.get("window").height) *
+        0.0122
+    },
+    locationChosen: false
+  };
+
+  pickLocationHandler = event => {
+    const coords = event.nativeEvent.coordinate;
+    // console.log(this.map);
+
+    // this.map.animateToRegion({
+    //   ...this.state.focusedLocation,
+    //   latitude: coords.latitude,
+    //   longitude: coords.longitude
+    // });
+    this.setState(prevState => {
+      return {
+        focusedLocation: {
+          ...prevState.focusedLocation,
+          latitude: coords.latitude,
+          longitude: coords.longitude
+        },
+        locationChosen: true
+      };
+    });
+  };
+
   render() {
-    return(
+    let marker = null;
+
+    if (this.state.locationChosen) {
+      marker = <MapView.Marker coordinate={this.state.focusedLocation} />;
+    }
+    return (
       <View style={styles.container}>
-        <View style={styles.placeholder}>
-          <Text>Map</Text>
-        </View>
+        <MapView
+          initialRegion={this.state.focusedLocation}
+          region={this.state.focusedLocation}
+          style={styles.map}
+          onPress={this.pickLocationHandler}
+          // ref={ref => (this.map = ref)}
+        >
+          {marker}
+        </MapView>
         <View style={styles.button}>
-          <ButtonWithBG backgroundColor='#29aaf4'
-                        onPress={()=>alert('Pick Location')}
+          <ButtonWithBG
+            backgroundColor="#29aaf4"
+            onPress={() => alert("Pick Location")}
           >
-          Locate Me
+            Locate Me
           </ButtonWithBG>
-        </View>      
+        </View>
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center"
   },
-  placeholder: {
+  map: {
     borderWidth: 1,
-    backgroundColor: '#ccc',
-    width: '80%',
-    height: 200,
+    backgroundColor: "#ccc",
+    width: "80%",
+    height: 250
   },
   button: {
-    margin: 8,
+    margin: 8
   }
 });
 
