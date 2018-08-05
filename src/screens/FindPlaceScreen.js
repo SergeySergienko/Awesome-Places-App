@@ -20,9 +20,9 @@ class FindPlaceScreen extends React.Component {
       duration: 1000,
       useNativeDriver: true
     }).start();
-    // this.setState({
-    //   placesLoaded: true
-    // });
+    this.setState({
+      placesLoaded: true
+    });
   };
   itemSelectedHandler = key => {
     const selectedPlace = this.props.places.find(place => place.key === key);

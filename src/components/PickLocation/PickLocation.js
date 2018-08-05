@@ -36,6 +36,32 @@ class PickLocation extends React.Component {
         locationChosen: true
       };
     });
+    this.props.onLocationPick({
+      latitude: coords.latitude,
+      longitude: coords.longitude
+    });
+  };
+
+  getLocationHandler = () => {
+    // navigator.geolocation.getCurrentPosition(
+    //   pos => {
+    const coordsEvent = {
+      nativeEvent: {
+        coordinate: {
+          latitude: 50.4501, // pseudo locate
+          longitude: 30.5234 // pseudo locate
+          // latitude: pos.coords.latitude,
+          // longitude: pos.coords.longitude
+        }
+      }
+    };
+    this.pickLocationHandler(coordsEvent);
+    // },
+    //   err => {
+    //     console.log(err);
+    //     alert("Fetching failed.");
+    //   }
+    // );
   };
 
   render() {
@@ -58,7 +84,7 @@ class PickLocation extends React.Component {
         <View style={styles.button}>
           <ButtonWithBG
             backgroundColor="#29aaf4"
-            onPress={() => alert("Pick Location")}
+            onPress={this.getLocationHandler}
           >
             Locate Me
           </ButtonWithBG>

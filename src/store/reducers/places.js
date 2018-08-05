@@ -18,6 +18,7 @@ const reducer = (state = initialState, action) => {
         places: state.places.concat({
           key: Math.random().toString(),
           name: action.placeName,
+          location: action.location,
           image: {
             uri:
               "https://i.pinimg.com/736x/2f/0a/56/2f0a56357bd99d2b4fe3d0a730d2e9f4--maps-with-street-view-great-barrier-reef.jpg"

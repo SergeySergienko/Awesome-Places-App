@@ -28,18 +28,29 @@ class SharePlaceScreen extends React.Component {
   };
 
   state = {
-    placeName: ""
+    placeName: "",
+    location: {
+      value: null,
+      valid: false
+    }
   };
 
   placeNameChangeHandler = placeName => {
     this.setState({ placeName });
   };
 
+  locationPickHandler = location => {
+    this.setState({
+      location: {
+        value: location,
+        valid: true
+      }
+    });
+  };
+
   placeAddHandler = () => {
-    if (this.state.placeName.trim() !== "") {
-      this.props.onAddPlace(this.state.placeName);
-      this.props.navigation.navigate("Find");
-    }
+    this.props.onAddPlace(this.state.placeName, this.state.location.value);
+    this.props.navigation.navigate("Find");
   };
   render() {
     return (
@@ -50,7 +61,7 @@ class SharePlaceScreen extends React.Component {
               <HeadingText>Share the place with us</HeadingText>
             </MainText>
             <PickImage />
-            <PickLocation />
+            <PickLocation onLocationPick={this.locationPickHandler} />
             <PlaceInput
               placeName={this.state.placeName}
               onChangeText={this.placeNameChangeHandler}
@@ -59,6 +70,10 @@ class SharePlaceScreen extends React.Component {
               <ButtonWithBG
                 backgroundColor="#ff00aa"
                 onPress={this.placeAddHandler}
+                disabled={
+                  !this.state.location.valid ||
+                  this.state.placeName.trim() === ""
+                }
               >
                 Share the Place
               </ButtonWithBG>
@@ -83,7 +98,7 @@ const styles = StyleSheet.create({
 
 const dispatchToProps = dispatch => {
   return {
-    onAddPlace: placeName => dispatch(addPlace(placeName))
+    onAddPlace: (placeName, location) => dispatch(addPlace(placeName, location))
   };
 };
 
