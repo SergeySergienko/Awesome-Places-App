@@ -32,6 +32,10 @@ class SharePlaceScreen extends React.Component {
     location: {
       value: null,
       valid: false
+    },
+    image: {
+      value: null,
+      valid: false
     }
   };
 
@@ -48,8 +52,21 @@ class SharePlaceScreen extends React.Component {
     });
   };
 
+  imagePickedHandler = image => {
+    this.setState({
+      image: {
+        value: image,
+        valid: true
+      }
+    });
+  };
+
   placeAddHandler = () => {
-    this.props.onAddPlace(this.state.placeName, this.state.location.value);
+    this.props.onAddPlace(
+      this.state.placeName,
+      this.state.location.value,
+      this.state.image.value
+    );
     this.props.navigation.navigate("Find");
   };
   render() {
@@ -60,7 +77,7 @@ class SharePlaceScreen extends React.Component {
             <MainText>
               <HeadingText>Share the place with us</HeadingText>
             </MainText>
-            <PickImage />
+            <PickImage onImagePicked={this.imagePickedHandler} />
             <PickLocation onLocationPick={this.locationPickHandler} />
             <PlaceInput
               placeName={this.state.placeName}
@@ -72,6 +89,7 @@ class SharePlaceScreen extends React.Component {
                 onPress={this.placeAddHandler}
                 disabled={
                   !this.state.location.valid ||
+                  !this.state.image.valid ||
                   this.state.placeName.trim() === ""
                 }
               >
@@ -98,7 +116,8 @@ const styles = StyleSheet.create({
 
 const dispatchToProps = dispatch => {
   return {
-    onAddPlace: (placeName, location) => dispatch(addPlace(placeName, location))
+    onAddPlace: (placeName, location, image) =>
+      dispatch(addPlace(placeName, location, image))
   };
 };
 

@@ -43,25 +43,25 @@ class PickLocation extends React.Component {
   };
 
   getLocationHandler = () => {
-    // navigator.geolocation.getCurrentPosition(
-    //   pos => {
-    const coordsEvent = {
-      nativeEvent: {
-        coordinate: {
-          latitude: 50.4501, // pseudo locate
-          longitude: 30.5234 // pseudo locate
-          // latitude: pos.coords.latitude,
-          // longitude: pos.coords.longitude
-        }
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const coordsEvent = {
+          nativeEvent: {
+            coordinate: {
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude
+              // latitude: 50.4501, // pseudo locate
+              // longitude: 30.5234 // pseudo locate
+            }
+          }
+        };
+        this.pickLocationHandler(coordsEvent);
+      },
+      err => {
+        console.log(err);
+        alert("Fetching failed.");
       }
-    };
-    this.pickLocationHandler(coordsEvent);
-    // },
-    //   err => {
-    //     console.log(err);
-    //     alert("Fetching failed.");
-    //   }
-    // );
+    );
   };
 
   render() {
@@ -74,10 +74,10 @@ class PickLocation extends React.Component {
       <View style={styles.container}>
         <MapView
           initialRegion={this.state.focusedLocation}
-          region={this.state.focusedLocation}
+          // region={this.state.focusedLocation}
           style={styles.map}
           onPress={this.pickLocationHandler}
-          // ref={ref => (this.map = ref)}
+          ref={ref => (this.map = ref)}
         >
           {marker}
         </MapView>
