@@ -15,7 +15,7 @@ class PickImage extends React.Component {
       aspect: [4, 3]
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       this.setState({
@@ -25,7 +25,7 @@ class PickImage extends React.Component {
     }
   };
 
-  // This method is used for react-native-image-picker library
+  // This method is used for ImagePicker from react-native-image-picker library
   pickImageHandler = () => {
     ImagePicker.showImagePicker(
       {
