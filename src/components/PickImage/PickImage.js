@@ -3,6 +3,7 @@ import { View, Image, StyleSheet } from "react-native";
 import ButtonWithBG from "../UI/ButtonWithBG";
 // import imagePlaceholder from '../../assets/pic_3.jpg';
 import { ImagePicker } from "expo";
+// import ImagePicker from "react-native-image-picker";
 
 class PickImage extends React.Component {
   state = {
@@ -21,7 +22,7 @@ class PickImage extends React.Component {
       this.setState({
         pickedImage: { uri: result.uri }
       });
-      this.props.onImagePicked({ uri: result.uri });
+      this.props.onImagePicked({ uri: result.uri, base64: result.data });
     }
   };
 
@@ -40,6 +41,7 @@ class PickImage extends React.Component {
           this.setState({
             pickedImage: { uri: res.uri }
           });
+          this.props.onImagePicked({ uri: res.uri, base64: res.data });
         }
       }
     );
@@ -52,7 +54,10 @@ class PickImage extends React.Component {
           <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
-          <ButtonWithBG backgroundColor="#29aaf4" onPress={this._pickImage}>
+          <ButtonWithBG
+            backgroundColor="#29aaf4"
+            onPress={this._pickImage}
+          >
             Pick Image
           </ButtonWithBG>
         </View>
