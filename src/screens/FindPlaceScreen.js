@@ -8,12 +8,17 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import PlaceList from "../components/PlaceList/PlaceList";
+import {getPlaces} from '../store/actions/index';
 
 class FindPlaceScreen extends React.Component {
   state = {
     placesLoaded: false,
     removeAnim: new Animated.Value(1)
   };
+  componentDidMount() {
+    this.props.onLoadPlaces();
+  }
+
   placesSearchHandler = () => {
     Animated.timing(this.state.removeAnim, {
       toValue: 0,
@@ -87,4 +92,10 @@ const stateToProps = state => {
   };
 };
 
-export default connect(stateToProps)(FindPlaceScreen);
+const dispatchToProps = dispatch => {
+  return {
+    onLoadPlaces: () => dispatch(getPlaces())
+  }
+}
+
+export default connect(stateToProps, dispatchToProps)(FindPlaceScreen);

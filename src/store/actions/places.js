@@ -2,7 +2,8 @@ import {
   ADD_PLACE,
   DELETE_PLACE,
   SELECT_PLACE,
-  DESELECT_PLACE
+  DESELECT_PLACE,
+  SET_PLACES
 } from "./actionTypes";
 import { uiStartLoading, uiStopLoading } from "./index";
 
@@ -18,6 +19,7 @@ export const addPlace = (placeName, location, image) => {
     )
       .catch(error => {
         console.log(error);
+        alert("Something went wrong, try again!");
         dispatch(uiStopLoading());
       })
       .then(res => res.json())
@@ -42,8 +44,42 @@ export const addPlace = (placeName, location, image) => {
       })
       .catch(error => {
         console.log(error);
+        alert("Something went wrong, try again!");
         dispatch(uiStopLoading());
       });
+  };
+};
+
+export const getPlaces = () => {
+  return dispatch => {
+    return fetch(
+      "https://awesome-places-project-348ef.firebaseio.com/places.json"
+    )
+      .catch(error => {
+        console.log(error);
+        alert("Something went wrong, sorry :/");
+      })
+      .then(res => res.json())
+      .then(parsRes => {
+        const places = [];
+        for (let key in parsRes) {
+          places.push({
+            ...parsRes[key],
+            image: {
+              uri: parsRes[key].image
+            },
+            key
+          });
+        }
+        dispatch(setPlaces(places));
+      });
+  };
+};
+
+export const setPlaces = places => {
+  return {
+    type: SET_PLACES,
+    places
   };
 };
 
