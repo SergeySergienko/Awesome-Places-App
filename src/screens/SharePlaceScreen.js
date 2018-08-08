@@ -7,7 +7,8 @@ import {
   Button,
   TextInput,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from "react-native";
 import PlaceInput from "../components/PlaceInput/PlaceInput";
 import { connect } from "react-redux";
@@ -67,38 +68,40 @@ class SharePlaceScreen extends React.Component {
       this.state.location.value,
       this.state.image.value
     );
-    this.props.navigation.navigate("Find");
+    // this.props.navigation.navigate("Find");
   };
   render() {
+    let submitButton = (
+      <ButtonWithBG
+        backgroundColor="#ff00aa"
+        onPress={this.placeAddHandler}
+        disabled={
+          !this.state.location.valid ||
+          !this.state.image.valid ||
+          this.state.placeName.trim() === ""
+        }
+      >
+        Share the Place
+      </ButtonWithBG>
+    );
+    if (this.props.isLoading) {
+      submitButton = <ActivityIndicator />;
+    }
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <ScrollView>
-          <View style={styles.container}>
-            <MainText>
-              <HeadingText>Share the place with us</HeadingText>
-            </MainText>
-            <PickImage onImagePicked={this.imagePickedHandler} />
-            <PickLocation onLocationPick={this.locationPickHandler} />
-            <PlaceInput
-              placeName={this.state.placeName}
-              onChangeText={this.placeNameChangeHandler}
-            />
-            <View style={styles.button}>
-              <ButtonWithBG
-                backgroundColor="#ff00aa"
-                onPress={this.placeAddHandler}
-                disabled={
-                  !this.state.location.valid ||
-                  !this.state.image.valid ||
-                  this.state.placeName.trim() === ""
-                }
-              >
-                Share the Place
-              </ButtonWithBG>
-            </View>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+      <ScrollView>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <MainText>
+            <HeadingText>Share the place with us</HeadingText>
+          </MainText>
+          <PickImage onImagePicked={this.imagePickedHandler} />
+          <PickLocation onLocationPick={this.locationPickHandler} />
+          <PlaceInput
+            placeName={this.state.placeName}
+            onChangeText={this.placeNameChangeHandler}
+          />
+          <View style={styles.button}>{submitButton}</View>
+        </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }
@@ -114,6 +117,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const stateToProps = state => {
+  return {
+    isLoading: state.ui.isLoading
+  };
+};
+
 const dispatchToProps = dispatch => {
   return {
     onAddPlace: (placeName, location, image) =>
@@ -122,6 +131,6 @@ const dispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  stateToProps,
   dispatchToProps
 )(SharePlaceScreen);
