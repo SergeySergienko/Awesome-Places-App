@@ -5,5 +5,5 @@ export {
   deselectPlace,
   getPlaces
 } from "./places";
-export { tryAuth } from "./auth";
+export { tryAuth, authGetToken, authAutoSignin } from "./auth";
 export { uiStartLoading, uiStopLoading } from "./ui";

@@ -17,7 +17,7 @@ import MainText from "./UI/MainText";
 import ButtonWithBG from "./UI/ButtonWithBG";
 import backgroundImage from "../assets/pic_1.jpg";
 import validate from "../utility/validation";
-import { tryAuth } from "../store/actions/index";
+import { tryAuth, authAutoSignin } from "../store/actions/index";
 
 class Auth extends React.Component {
   state = {
@@ -56,6 +56,9 @@ class Auth extends React.Component {
   }
   componentWillUnmount() {
     Dimensions.removeEventListener("change", this.updateStyles);
+  }
+  componentDidMount() {
+    this.props.onAutoSignIn();
   }
   switchAuthModeHandler = () => {
     this.setState(prevState => {
@@ -281,7 +284,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode))
+    onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode)),
+    onAutoSignIn: () => dispatch(authAutoSignin())
   };
 };
 

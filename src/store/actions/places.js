@@ -5,18 +5,30 @@ import {
   DESELECT_PLACE,
   SET_PLACES
 } from "./actionTypes";
-import { uiStartLoading, uiStopLoading } from "./index";
+import { uiStartLoading, uiStopLoading, authGetToken } from "./index";
 
 export const addPlace = (placeName, location, image) => {
   return dispatch => {
+    let authToken;
     dispatch(uiStartLoading());
-    fetch(
-      "https://us-central1-awesome-places-project-348ef.cloudfunctions.net/storeImage",
-      {
-        method: "POST",
-        body: JSON.stringify({ image: image.base64 })
-      }
-    )
+    dispatch(authGetToken())
+      .catch(() => {
+        alert("No valid token found!");
+      })
+      .then(token => {
+        authToken = token;
+        return fetch(
+          "https://us-central1-awesome-places-project-348ef.cloudfunctions.net/storeImage",
+          {
+            method: "POST",
+            body: JSON.stringify({ image: image.base64 }),
+            headers: {
+              Authorization: "Bearer " + authToken
+            }
+          }
+        );
+      })
+
       .catch(error => {
         console.log(error);
         alert("Something went wrong, try again!");
@@ -30,7 +42,8 @@ export const addPlace = (placeName, location, image) => {
           image: parsRes.imageUrl
         };
         return fetch(
-          "https://awesome-places-project-348ef.firebaseio.com/places.json",
+          "https://awesome-places-project-348ef.firebaseio.com/places.json?auth=" +
+            authToken,
           {
             method: "POST",
             body: JSON.stringify(placeData)
@@ -52,7 +65,16 @@ export const addPlace = (placeName, location, image) => {
 
 export const getPlaces = () => {
   return dispatch => {
-    fetch("https://awesome-places-project-348ef.firebaseio.com/places.json")
+    dispatch(authGetToken())
+      .then(token => {
+        return fetch(
+          "https://awesome-places-project-348ef.firebaseio.com/places.json?auth=" +
+            token
+        );
+      })
+      .catch(() => {
+        alert("No valid token found!");
+      })
       .then(res => res.json())
       .then(parsRes => {
         const places = [];
