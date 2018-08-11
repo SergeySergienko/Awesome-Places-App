@@ -1,4 +1,4 @@
-import { TRY_AUTH } from "./actionTypes";
+import { TRY_AUTH, AUTH_SET_TOKEN } from "./actionTypes";
 import { uiStartLoading, uiStopLoading } from "./index";
 import NavigationService from "../../../NavigationService";
 
@@ -21,20 +21,28 @@ export const tryAuth = (authData, authMode) => {
         "Content-Type": "application/json"
       }
     })
-      .catch(err => {
-        console.log(err);
-        alert("Authentication failed, please try again!");
-        dispatch(uiStopLoading());
-      })
       .then(res => res.json())
       .then(parsRes => {
         dispatch(uiStopLoading());
-        if (parsRes.error) {
+        if (!parsRes.idToken) {
           alert("Authentication failed, try again!");
         } else {
+          dispatch(authSetToken(parsRes.idToken));
           NavigationService.navigate("Tabs");
         }
-        // console.log(parsRes);
+        console.log(parsRes);
+      })
+      .catch(err => {
+        console.log("Ошибка: ", err);
+        alert("В catch ловим ошибку!");
+        dispatch(uiStopLoading());
       });
+  };
+};
+
+export const authSetToken = token => {
+  return {
+    type: AUTH_SET_TOKEN,
+    token
   };
 };

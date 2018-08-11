@@ -52,13 +52,7 @@ export const addPlace = (placeName, location, image) => {
 
 export const getPlaces = () => {
   return dispatch => {
-    return fetch(
-      "https://awesome-places-project-348ef.firebaseio.com/places.json"
-    )
-      .catch(error => {
-        console.log(error);
-        alert("Something went wrong, sorry :/");
-      })
+    fetch("https://awesome-places-project-348ef.firebaseio.com/places.json")
       .then(res => res.json())
       .then(parsRes => {
         const places = [];
@@ -72,6 +66,10 @@ export const getPlaces = () => {
           });
         }
         dispatch(setPlaces(places));
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Something went wrong, sorry :/");
       });
   };
 };
