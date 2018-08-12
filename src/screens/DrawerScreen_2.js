@@ -1,12 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Icon, Button, Container, Header, Content, Left } from "native-base";
+import { connect } from "react-redux";
+import { authLogout } from "../store/actions/index";
 
-export default class DrawerScreen_2 extends React.Component {
+class DrawerScreen_2 extends React.Component {
   static navigationOptions = {
-    title: "SEARCH"
-    // drawerIcon: <Icon name="search" />,
-    // drawerLabel: "SEARCH"
+    title: "Sign Out",
+    drawerIcon: <Icon name="log-out" />,
+    drawerLabel: "Sign Out"
   };
   render() {
     return (
@@ -20,7 +22,7 @@ export default class DrawerScreen_2 extends React.Component {
           </Left>
         </Header>
         <Content contentContainerStyle={styles.container}>
-          <Text>Drawer Screen 2</Text>
+          <Text>Sign Out</Text>
         </Content>
       </Container>
     );
@@ -34,3 +36,14 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogout: () => dispatch(authLogout())
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(DrawerScreen_2);

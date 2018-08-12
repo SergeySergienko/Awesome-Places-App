@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 // import { Icon } from "react-native-elements";
-import {Icon, Button, Container, Header, Content, Left} from 'native-base';
+import { Icon, Button, Container, Header, Content, Left } from "native-base";
 import Auth from "../components/Auth";
 
 export default class AuthScreen extends React.Component {
@@ -9,6 +9,8 @@ export default class AuthScreen extends React.Component {
     // const menu = <Icon name='menu' color='white' size={30}/>;
     return {
       title: navigation.state.routeName,
+      drawerIcon: <Icon name="log-in" />,
+      drawerLabel: "Log In"
       // headerRight: (
       //   <Text onPress={() => navigation.navigate('Drawer')}>{menu}</Text>
       // ),
@@ -16,29 +18,29 @@ export default class AuthScreen extends React.Component {
   };
 
   render() {
-    return(
+    return (
       <Container>
-          <Header>
-            <Left>
-              <Icon name='ios-menu'
-                    onPress={()=>this.props.navigation.toggleDrawer()}
-              />
-            </Left>
-          </Header>
-          <Content contentContainerStyle={styles.container}>
-            <Auth navigation={this.props.navigation} />
-          </Content>
-        </Container>
+        <Header>
+          <Left>
+            <Icon
+              name="ios-menu"
+              onPress={() => this.props.navigation.toggleDrawer()}
+            />
+          </Left>
+        </Header>
+        <Content contentContainerStyle={styles.container}>
+          <Auth navigation={this.props.navigation} />
+        </Content>
+      </Container>
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     // alignItems: 'center',
     // borderWidth: 2,
-    borderColor: 'green',
-
+    borderColor: "green"
   }
 });
