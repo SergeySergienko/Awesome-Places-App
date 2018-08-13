@@ -5,16 +5,22 @@ import imagePlaceholder from "../../assets/pic_1.jpg";
 import { MapView } from "expo";
 
 class PickLocation extends React.Component {
-  state = {
-    focusedLocation: {
-      latitude: 49.9935,
-      longitude: 36.2304,
-      latitudeDelta: 0.0122,
-      longitudeDelta:
-        (Dimensions.get("window").width / Dimensions.get("window").height) *
-        0.0122
-    },
-    locationChosen: false
+  componentWillMount = () => {
+    this.reset();
+  };
+
+  reset = () => {
+    this.setState({
+      focusedLocation: {
+        latitude: 49.9935,
+        longitude: 36.2304,
+        latitudeDelta: 0.0122,
+        longitudeDelta:
+          (Dimensions.get("window").width / Dimensions.get("window").height) *
+          0.0122
+      },
+      locationChosen: false
+    });
   };
 
   pickLocationHandler = event => {
@@ -74,7 +80,9 @@ class PickLocation extends React.Component {
       <View style={styles.container}>
         <MapView
           initialRegion={this.state.focusedLocation}
-          // region={this.state.focusedLocation}
+          region={
+            !this.state.locationChosen ? this.state.focusedLocation : null
+          }
           style={styles.map}
           onPress={this.pickLocationHandler}
           ref={ref => (this.map = ref)}

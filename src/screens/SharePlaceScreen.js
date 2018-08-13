@@ -28,16 +28,22 @@ class SharePlaceScreen extends React.Component {
     };
   };
 
-  state = {
-    placeName: "",
-    location: {
-      value: null,
-      valid: false
-    },
-    image: {
-      value: null,
-      valid: false
-    }
+  componentWillMount = () => {
+    this.reset();
+  };
+
+  reset = () => {
+    this.setState({
+      placeName: "",
+      location: {
+        value: null,
+        valid: false
+      },
+      image: {
+        value: null,
+        valid: false
+      }
+    });
   };
 
   placeNameChangeHandler = placeName => {
@@ -68,6 +74,9 @@ class SharePlaceScreen extends React.Component {
       this.state.location.value,
       this.state.image.value
     );
+    this.reset();
+    this.imagePicker.reset();
+    this.locationPicker.reset();
     // this.props.navigation.navigate("Find");
   };
   render() {
@@ -93,8 +102,8 @@ class SharePlaceScreen extends React.Component {
           <MainText>
             <HeadingText>Share the place with us</HeadingText>
           </MainText>
-          <PickImage onImagePicked={this.imagePickedHandler} />
-          <PickLocation onLocationPick={this.locationPickHandler} />
+          <PickImage onImagePicked={this.imagePickedHandler} ref={ref=>this.imagePicker=ref}/>
+          <PickLocation onLocationPick={this.locationPickHandler} ref={ref => this.locationPicker=ref}/>
           <PlaceInput
             placeName={this.state.placeName}
             onChangeText={this.placeNameChangeHandler}

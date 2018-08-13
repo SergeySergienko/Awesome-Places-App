@@ -10,13 +10,20 @@ class PickImage extends React.Component {
     pickedImage: null
   };
 
+  reset = () => {
+    this.setState({
+      pickedImage: null
+    })
+  }
+
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [4, 3]
+      aspect: [4, 3],
+      base64: true
     });
 
-    // console.log(result);
+    console.log(result);
 
     if (!result.cancelled) {
       this.setState({
@@ -30,7 +37,9 @@ class PickImage extends React.Component {
   pickImageHandler = () => {
     ImagePicker.showImagePicker(
       {
-        title: "Pick an Image"
+        title: "Pick an Image",
+        maxWidth: 800,
+        maxHeight: 600
       },
       res => {
         if (res.didCancel) {
